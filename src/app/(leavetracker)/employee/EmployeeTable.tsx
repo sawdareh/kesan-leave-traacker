@@ -24,8 +24,6 @@ import {
     TableRow
 } from "@/components/ui/table"
 import {
-    CircleCheckIcon,
-    CircleXIcon,
     ArrowUpDown,
     ArrowDown,
     ArrowUp,
@@ -54,7 +52,7 @@ export default function TicketTable({data}:Props) {
         }
     ])
 
-    usePolling(300000,searchParams.get("searchText"))
+    usePolling(10000,searchParams.get("searchText"))
     const pageIndex=useMemo(()=>{
         const page=searchParams.get("page")
         return page? parseInt(page)-1:0

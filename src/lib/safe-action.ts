@@ -1,5 +1,5 @@
 
-import {createSafeActionClient, DEFAULT_SERVER_ERROR_MESSAGE} from 'next-safe-action';
+import {createSafeActionClient} from 'next-safe-action';
 import {z} from 'zod'
 import * as Sentry from '@sentry/nextjs'
 import { NeonDbError } from '@neondatabase/serverless';

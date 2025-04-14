@@ -14,7 +14,7 @@ type Pros={
 import React from 'react'
 
 export default function BackButton({
-    title,variant,className,...props
+    title,variant,className,
 }:Pros) {
 
     const router=useRouter();

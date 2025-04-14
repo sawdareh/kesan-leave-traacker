@@ -47,14 +47,7 @@ export default function EmployeeForm({
             }
           )
         },
-        onError({error}){
-          //toast user
-          toast.error(
-            "Error!",{
-              description:"Save Failed.",
-            }
-          )
-        }
+
     })    
 
     async function submitForm(data:insertEmployeeSchemaType) {

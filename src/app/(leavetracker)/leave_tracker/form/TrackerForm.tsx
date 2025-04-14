@@ -54,14 +54,6 @@ export default function TicketForm({
             }
           )
         },
-        onError({error}){
-          //toast user
-          toast.error(
-            "Error!",{
-              description:"Save Failed.",
-            }
-          )
-        }
     })    
 
     async function submitForm(data:insertTrackerSchemaType) {

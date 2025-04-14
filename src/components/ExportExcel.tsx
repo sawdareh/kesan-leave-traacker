@@ -38,7 +38,7 @@ export async function exportToExcel(year = 2023) {
 
     worksheet.getCell(`${alphabet[alphabetcount]}4`).value = 'Employee Names';
     // Add name below the coloumn name Employee name data starting from row 5
-    let columnNameEmployee = alphabet[alphabetcount];
+    const columnNameEmployee = alphabet[alphabetcount];
     employee.map((data) => {
       worksheet.getCell(`${columnNameEmployee}${4+1}`).value= `${data.name}`;
 

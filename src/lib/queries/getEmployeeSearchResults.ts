@@ -1,7 +1,7 @@
 
 import { db } from "@/db";
 import { employee } from "@/db/schema";
-import {ilike,or,sql} from "drizzle-orm"
+import {ilike,or} from "drizzle-orm"
 
 export async function getEmployeeSearchResults(searchText:string) {
     const results=await db.select({
