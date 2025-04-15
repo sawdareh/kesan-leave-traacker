@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -14,6 +15,16 @@ import { FileDown,LoaderCircle } from 'lucide-react';
 
 export default function ExportDropdown({ uniqueYears }: { uniqueYears: number[] }) {
   const [downloading, setDownloading] = useState(false);
+  const router=useRouter();
+
+  // ✅ Auto-refresh every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+       router.refresh();
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDownload = async (year: number) => {
     setDownloading(true);
@@ -54,7 +65,7 @@ export default function ExportDropdown({ uniqueYears }: { uniqueYears: number[] 
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>Export by Year</DropdownMenuLabel>
+        <DropdownMenuLabel>Export summary by Year</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {uniqueYears.length > 0 ? (
           uniqueYears.map((year) => (

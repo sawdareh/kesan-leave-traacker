@@ -19,7 +19,7 @@ export default async function TrackerPage({
       <>
         <TrackerSearch/>
         {results.length?<TrackerTable  data={results}/>:(
-        <p className="mt-4">No  tracker found</p>
+        <p className="mt-4">No leave tracker found; you can add the new leave tracker in the menu.</p>
       )}
             
       </>
@@ -32,7 +32,7 @@ export default async function TrackerPage({
     <>
       <TrackerSearch/>
       {results.length?<TrackerTable data={results}/> :(
-        <p className="mt-4">No tracker found</p>
+        <p className="mt-4">{`No ${searchText} found in leave tracker`}</p>
       )}
       
     </>

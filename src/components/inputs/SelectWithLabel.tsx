@@ -58,14 +58,15 @@ export  function SelectWithLabel<S>({
                         </FormControl>
 
                         <SelectContent>
-                            {data.map(item => (
-                            <SelectItem
-                                key={`${item.id}`}
-                                value={item.id.toString()}
-                            >
+                        {data.length > 0 ? (
+                            data.map(item => (
+                                <SelectItem key={item.id.toString()} value={item.id.toString()}>
                                 {item.description}
-                            </SelectItem>
-                            ))}
+                                </SelectItem>
+                            ))
+                            ) : (
+                            <SelectItem value="add" disabled={true}>No data exit, add the data in menu</SelectItem>
+                            )}
                         </SelectContent>
                     </Select>
 

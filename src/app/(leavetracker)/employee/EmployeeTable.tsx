@@ -211,8 +211,8 @@ export default function TicketTable({data}:Props) {
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex justify-between items-center">
-                    <div className="flex justify-between items-center gap-1 flex-wrap">
+            <div className="flex justify-between items-center gap-1 flex-wrap">
+                    <div className="flex justify-between items-center gap-1">
                         <div>
                             <p className="whitespace-nowrap font-bold">
                                 {`Page ${table.getState().pagination.pageIndex+1}of ${Math.max(1,table.getPageCount())}`}
@@ -222,7 +222,7 @@ export default function TicketTable({data}:Props) {
                         </div>
 
                     </div>
-                    <div className="flex flex-row gap-1">
+                    <div className="flex  flex-col sm:flex-row gap-1">
                         <div className="space-x-1">
                             <Button variant="outline"
                                 onClick={()=>table.resetSorting()}

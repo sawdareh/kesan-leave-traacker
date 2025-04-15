@@ -10,7 +10,7 @@ export default async function TrackerPage(){
     return (
       <>
         {results.length?<TrackerTypeTable  data={results}/>:(
-        <p className="mt-4">No  tracker found</p>
+        <p className="mt-4">No tracker type found , add new tracker type in the menu</p>
       )}
             
       </>

@@ -20,7 +20,7 @@ export default async function EmployeePage({
       <>
         <EmployeeSearch/>
         {results.length?<EmployeeTable data={results}/>:(
-        <p className="mt-4">No Employee found</p>
+        <p className="mt-4">No employee data exists; add the employee in the menu.</p>
       )}
             
       </>
@@ -33,7 +33,7 @@ export default async function EmployeePage({
     <>
       <EmployeeSearch/>
       {results.length?<EmployeeTable data={results}/> :(
-        <p className="mt-4">No Employee found</p>
+        <p className="mt-4">{`No ${searchText} found in employee`} </p>
       )}
       
     </>

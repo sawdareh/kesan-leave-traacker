@@ -60,9 +60,8 @@ export default function TrackerTable({data}:Props) {
     },[searchParams.get("page")]);
 
     const columnHeadersArray:Array<keyof RowType>=[
-        "trackersDate",
-        "type",
         "name",
+        "type",
         "date",
         "email",
         "phone"
