@@ -5,9 +5,18 @@ import {z} from "zod"
 
 export const insertTrackerSchema = createInsertSchema(trackers, {
     id: z.union([z.number(), z.literal("(New)")]),
-    employeeId:z.union([z.number(), z.string().min(1, "Employeee Name is required")]),
+    employeeId: z
+      .union([z.number(), z.string().min(1)])
+      .refine((val) => val !== "" && val !== null && val !== undefined, {
+        message: "Employee Name is required",
+      }),
   
-    trackertypeId:z.union([z.number(), z.string().min(1, "Tracker  Name is required")]),
+    trackertypeId: z
+      .union([z.number(), z.string().min(1)])
+      .refine((val) => val !== "" && val !== null && val !== undefined, {
+        message: "Tracker Name is required",
+      }),
+  
     date: () =>
       z
         .string()

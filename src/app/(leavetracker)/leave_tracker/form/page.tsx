@@ -14,7 +14,7 @@ export async function generateMetadata({
   const { employeeId, trackerId } = await searchParams;
 
   if (!employeeId && !trackerId)
-    return { title: "Missing employeeId or trackerId" };
+    return { title: "New Tracker" };
 
   if (employeeId) {
     return { title: `New Tracker for employee #${employeeId}` };
