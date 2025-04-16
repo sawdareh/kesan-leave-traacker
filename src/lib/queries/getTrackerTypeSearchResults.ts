@@ -13,7 +13,7 @@ export async function getTrackerTypeSearchResults(searchText:string) {
     })
     .from(trackertypes)
     .where(or(
-        ilike(trackertypes.name,`%${searchText}%`),    ))
+        ilike(trackertypes.name,`%${searchText}%`)))
     .orderBy(trackertypes.updatedAt)
     return results;
     
