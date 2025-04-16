@@ -10,7 +10,7 @@ export default async function TrackerPage(){
     return (
       <>
         {results.length?<TrackerTypeTable  data={results}/>:(
-        <p className="mt-4 px-4 py-2 text-sm text-white/70 bg-white/10 backdrop-blur-md rounded-md shadow-sm opacity-40">No tracker type found , add new tracker type in the menu</p>
+        <p className="mt-4 px-4 py-2 text-sm text-black/90 dark:text-white/70 bg-black/40 dark:bg-white/10 backdrop-blur-md rounded-md shadow-sm opacity-40">No tracker type found , add new tracker type in the menu</p>
       )}
             
       </>
