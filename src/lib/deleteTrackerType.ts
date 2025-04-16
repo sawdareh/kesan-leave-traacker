@@ -1,5 +1,5 @@
 export async function deleteTrackerType(id: number) {
-    const res = await fetch("/api/delete-trackerType", {
+    const res = await fetch("/api/delete-type", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
