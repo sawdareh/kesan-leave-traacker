@@ -18,7 +18,7 @@ import { insertTrackerTypeSchema,type insertTrackerTypeSchemaType,type selectTra
 
  }
 
-export default function EmployeeForm({
+export default function TrackerTypeForm({
     trackertype
 }:Props){
     const defaultValues:insertTrackerTypeSchemaType={

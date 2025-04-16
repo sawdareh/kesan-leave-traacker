@@ -234,7 +234,7 @@ export default function TrackerTypeTable({ data }: Props) {
                 key={row.id}
                 className="cursor-pointer hover:bg-border/25 dark:hover:bg-ring/40"
                 onClick={() =>
-                  router.push(`/leave_tracker/form?trackerId=${row.original.id}`)
+                  router.push(`/tracker_type/form?trackertypeId=${row.original.id}`)
                 }
               >
                 {row.getVisibleCells().map((cell) => (

@@ -12,7 +12,7 @@ export async function generateMetadata({
     if(!trackertypeId)return {title:"New TrackerType"}
     return{title:`Edit TrackerType#${trackertypeId}`}
 }
-export default async function EmployeeFormPage({
+export default async function TrackerTypeFormPage({
     searchParams,
 }:{
     searchParams:Promise<{[key:string]:string | undefined}>
@@ -48,9 +48,4 @@ export default async function EmployeeFormPage({
         }
     }
 
-  return (
-    <div>
-      
-    </div>
-  )
 }
