@@ -1,9 +1,9 @@
 // app/api/delete-tracker/route.ts
 
-import { deleteTrackerType } from "@/lib/queries/deleteTrackerType";
+import { deleteTrackerTypes } from "@/lib/queries/deleteTrackerType";
 
 export async function POST(req: Request) {
   const { id } = await req.json();
-  await deleteTrackerType(id);
+  await deleteTrackerTypes(id);
   return new Response("Deleted", { status: 200 });
 }
