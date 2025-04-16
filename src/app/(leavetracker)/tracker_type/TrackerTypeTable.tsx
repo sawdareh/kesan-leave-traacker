@@ -2,7 +2,6 @@
 
 import type { TrackerTypeSearchResultsType } from "@/lib/queries/getTrackerTypeSearchResults";
 import { deleteTrackerType } from "@/lib/deleteTrackerType";
-import { toast } from "sonner";
 
 import {
   createColumnHelper,
@@ -17,8 +16,8 @@ import {
   getSortedRowModel,
   CellContext,
 } from "@tanstack/react-table";
-
 import { Button } from "@/components/ui/button";
+
 import {
   Table,
   TableBody,
@@ -41,6 +40,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import usePolling from "@/hooks/usePolling";
 import Filter from "@/components/react-table/Filter";
+import { toast } from "sonner";
 
 type Props = {
   data: TrackerTypeSearchResultsType;
@@ -70,7 +70,8 @@ export default function TrackerTypeTable({ data }: Props) {
   const columnHeadersArray: Array<keyof RowType> = [
     "trackertypesDate",
     "name",
-    "id" 
+    "id"
+
   ];
 
   const columnHelper = createColumnHelper<RowType>();
@@ -80,25 +81,29 @@ export default function TrackerTypeTable({ data }: Props) {
     const router = useRouter();
 
     const handleDeleteClick = async (e: React.MouseEvent) => {
-      e.stopPropagation(); // prevent row click
-
-      if (isDeleting) return;
-      setIsDeleting(true);
-
-      try {
-        await deleteTrackerType(row.original.id);
-        toast.success(`Deleted Tracker Type #${row.original.id} successfully!`, {
-          duration: 3000,
-          description: "The tracker type record has been removed.",
-        });
-        router.refresh(); // refresh table data
-      } catch (error) {
-        console.error(error);
-        toast.error("This tracker is linked to leave records. Delete those first to proceed.");
-      } finally {
-        setIsDeleting(false);
-      }
-    };
+        e.stopPropagation(); // prevent row click
+      
+        if (isDeleting) return;
+        setIsDeleting(true);
+      
+        try {
+          await deleteTrackerType(row.original.id);
+          
+          // ✅ Show success toast before refreshing
+          toast.success(`Deleted Tracker type #${row.original.id} successfully!`, {
+            duration: 3000,
+            description: "The tracker type record has been removed.",
+          });
+      
+          router.refresh(); // ✅ Refresh after showing toast
+        } catch (error) {
+          console.error(error);
+          toast.error("The tracker type can't be removed; first remove it in the leave tracker table.");
+        } finally {
+          setIsDeleting(false);
+        }
+      };
+      
 
     return (
       <Button
@@ -117,7 +122,6 @@ export default function TrackerTypeTable({ data }: Props) {
   };
 
   ActionsCell.displayName = "ActionsCell";
-
 
 
   const columns = [
@@ -230,7 +234,7 @@ export default function TrackerTypeTable({ data }: Props) {
                 key={row.id}
                 className="cursor-pointer hover:bg-border/25 dark:hover:bg-ring/40"
                 onClick={() =>
-                  router.push(`/tracker_type/form?trackertypeId=${row.original.id}`)
+                  router.push(`/leave_tracker/form?trackerId=${row.original.id}`)
                 }
               >
                 {row.getVisibleCells().map((cell) => (
@@ -244,20 +248,19 @@ export default function TrackerTypeTable({ data }: Props) {
         </Table>
       </div>
 
-      <div className="flex justify-between items-center gap-1 flex-wrap">
+      <div className="flex flex-cols sm:flex-row justify-between items-center gap-1 flex-wrap">
         <div>
           <p className="whitespace-nowrap font-bold">
             {`Page ${table.getState().pagination.pageIndex + 1} of ${Math.max(
               1,
               table.getPageCount()
-            )}`}
+            )} `}
             &nbsp;&nbsp;
             {`[${table.getFilteredRowModel().rows.length} ${
               table.getFilteredRowModel().rows.length !== 1 ? "total results" : "result"
             }]`}
           </p>
         </div>
-
         <div className="flex flex-col sm:flex-row gap-1">
           <div className="space-x-1">
             <Button variant="outline" onClick={() => table.resetSorting()}>
@@ -267,7 +270,6 @@ export default function TrackerTypeTable({ data }: Props) {
               Reset Filters
             </Button>
           </div>
-
           <div className="flex flex-row gap-1">
             <Button variant="outline" onClick={() => router.refresh()}>
               Refresh Data
