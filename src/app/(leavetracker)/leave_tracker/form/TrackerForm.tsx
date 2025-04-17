@@ -1,7 +1,7 @@
 "use client"
 
 import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
-import { InputDateWithLabel } from "@/components/inputs/InputDateWithLabel";
+import { InputTimeWithLabel } from "@/components/inputs/InputTimeWithLabel";
 import {useForm} from "react-hook-form"
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -32,8 +32,9 @@ export default function TicketForm({
         id:tracker?.id ?? "(New)",
         employeeId:tracker?.employeeId ?? 0 ,
         trackertypeId:tracker?.trackertypeId?? 0,
-        date:tracker?.date?? '',
-    }
+        startTime: tracker?.startTime ? tracker.startTime.slice(0, 5) : '', // "13:30:00" -> "13:30"
+        endTime: tracker?.endTime ? tracker.endTime.slice(0, 5) : '',       // "15:00:00" -> "15:00"
+        }
     const form=useForm<insertTrackerSchemaType>({
         mode:"onBlur",
         resolver:zodResolver(insertTrackerSchema),
@@ -81,9 +82,13 @@ export default function TicketForm({
                             nameInSchema="trackertypeId"
                             data={type}
                         />
-                        <InputDateWithLabel <insertTrackerSchemaType>
-                            fieldTitle="Date"
-                            nameInSchema="date"
+                        <InputTimeWithLabel <insertTrackerSchemaType>
+                            fieldTitle="StartTime"
+                            nameInSchema="startTime"
+                        />
+                        <InputTimeWithLabel <insertTrackerSchemaType>
+                            fieldTitle="EndTime"
+                            nameInSchema="endTime"
                         />
                         <div className="flex flex-col gap-4 w-full max-w-xs">
                                 <div className="flex gap-2">

@@ -17,14 +17,18 @@ export const insertTrackerSchema = createInsertSchema(trackers, {
         message: "Tracker Name is required",
       }),
   
-    date: () =>
-      z
-        .string()
-        .nonempty("Date is required")
-        .refine((val) => !isNaN(new Date(val).getTime()), {
-          message: "Invalid date",
-        })
-        .transform((val) => new Date(val).toISOString().split("T")[0]),
+    startTime: () =>
+        z
+          .string()
+          .nonempty("Start time is required")
+          .regex(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+      
+    endTime: () =>
+        z
+          .string()
+          .nonempty("End time is required")
+          .regex(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+      
     })
     
 

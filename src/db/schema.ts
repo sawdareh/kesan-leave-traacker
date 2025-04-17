@@ -1,53 +1,64 @@
+import { pgTable, serial, varchar, timestamp, time, integer } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
-import { pgTable, serial, varchar,timestamp,date } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm"; // Fixed typo: 'Relation' -> 'relations'
-import { integer } from "drizzle-orm/pg-core"; // Fixed typo: 'gel-core' -> 'pg-core'
-
+export const departments = pgTable("departments", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(), // Added length for clarity
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
+});
 
 export const employee = pgTable("employee", {
-    id: serial("id").primaryKey(),
-    name: varchar("name").notNull(), 
-    email: varchar("email").unique().notNull(),
-    phone: varchar("phone").unique().notNull(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
+  id: serial("id").primaryKey(),
+  departmentId: integer("department_id").references(() => departments.id), // Remove .nullable()
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).unique().notNull(),
+  phone: varchar("phone", { length: 20 }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });
 
 export const trackertypes = pgTable("trackertypes", {
-    id: serial("id").primaryKey(),
-    name: varchar("name").notNull(), 
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });
 
 export const trackers = pgTable("trackers", {
-    id: serial("id").primaryKey(),
-    employeeId:integer("employee_id").notNull().references(()=>employee.id),
-    trackertypeId:integer("trackertype_id").notNull().references(()=>trackertypes.id),
-    date: date("date").notNull(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
+  id: serial("id").primaryKey(),
+  employeeId: integer("employee_id").notNull().references(() => employee.id),
+  trackertypeId: integer("trackertype_id").notNull().references(() => trackertypes.id),
+  startTime: time("start_time").notNull(),
+  endTime: time("end_time").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });
 
+// Relations
+export const departmentsRelations = relations(departments, ({ many }) => ({
+  employees: many(employee),
+}));
 
+export const employeeRelations = relations(employee, ({ many, one }) => ({
+  trackers: many(trackers),
+  department: one(departments, {
+    fields: [employee.departmentId],
+    references: [departments.id],
+  }),
+}));
 
-export const employeeRelations = relations(employee, ({ many }) => ({
-    trackers: many(trackers),
-  }));
-  
-  export const trackertypeRelations = relations(trackertypes, ({ many }) => ({
-    trackers: many(trackers),
-  }));
-  
+export const trackertypeRelations = relations(trackertypes, ({ many }) => ({
+  trackers: many(trackers),
+}));
 
 export const trackersRelations = relations(trackers, ({ one }) => ({
-    employee: one(employee, {
-      fields: [trackers.employeeId],
-      references: [employee.id],
-    }),
-    trackertypes: one(trackertypes, {
-      fields: [trackers.trackertypeId],
-      references: [trackertypes.id],
-    }),
-  }));
-  
+  employee: one(employee, {
+    fields: [trackers.employeeId],
+    references: [employee.id],
+  }),
+  trackertype: one(trackertypes, {
+    fields: [trackers.trackertypeId],
+    references: [trackertypes.id],
+  }),
+}));

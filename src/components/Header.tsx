@@ -6,7 +6,7 @@ import NavButton from './NavButton';
 import { ModeToggle } from './ModeToggle';
 import Link from 'next/link';
 import NavButtonMenu from './NavButtonMenu';
-import  getAllTrackers from '@/lib/queries/getAllTrackers';
+import getAllTrackers from '@/lib/queries/getAllTrackers';
 import DropDownMenuYear from '@/components/DropDownMenuYear'
 
 export default async function Header() {
@@ -16,7 +16,7 @@ export default async function Header() {
     const uniqueYears = Array.from(
     new Set(
         tracker
-        .map((data) => new Date(data.date).getFullYear())
+        .map((data) => new Date(data.trackersDate).getFullYear())
         .filter((year) => !isNaN(year))
     )
     ).sort((a, b) => a - b);
@@ -54,13 +54,15 @@ export default async function Header() {
                     label='Settting Menu'
                     choice={[
                         {title:"Tracker type", href:"/tracker_type"},
-                        {title:"Add New Tracker type", href:"/tracker_type/form"}
+                        {title:"Add New Tracker type", href:"/tracker_type/form"},
+                        {title:"Program", href:"/department"},
+                        {title:"Add New Program", href:"/department/form"},
                     ]}
                 >
                 </NavButtonMenu>
                 <DropDownMenuYear uniqueYears={uniqueYears}>
 
-                </DropDownMenuYear>
+                </DropDownMenuYear> 
             
                 <ModeToggle/>
                 <Button variant="ghost" size="icon" aria-label="LogOut" title='LogOut' className='rounded-full' asChild>

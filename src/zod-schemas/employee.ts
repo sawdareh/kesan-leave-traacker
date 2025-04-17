@@ -1,12 +1,18 @@
 
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { employee } from "@/db/schema"
+import {z} from "zod"
 
 export const insertEmployeeSchema = createInsertSchema(
     employee, {
         name: (schema) => schema.min(1, "Employee is required"),
+        departmentId: z
+        .union([z.number(), z.string().min(1)])
+        .refine((val) => val !== "" && val !== null && val !== undefined, {
+          message: "Employee Name is required",
+        }),
+
         email: (schema) => schema.email("Invalid email address"),
-        phone: (schema) => schema.regex(/^\d{3}-\d{3}-\d{4}$/, "Invalid phone number format. Use XXX-XXX-XXXX"),
     }
 )
 

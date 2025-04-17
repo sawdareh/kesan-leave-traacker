@@ -4,39 +4,30 @@ import {useForm} from "react-hook-form"
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod"
 import {useAction} from "next-safe-action/hooks";
-import {saveEmployeeAction} from "@/app/actions/saveEmployeeAction"
+import {saveDepartmentAction} from "@/app/actions/saveDepartment"
 import { toast } from "sonner"; // Correct import
 import { LoaderCircle } from "lucide-react";
 import {DisplayServerActionResponse} from "@/components/DisplayServerActionResponse";
 import { Form } from "@/components/ui/form"
-import { selectDepartmentSchemaType } from "@/zod-schemas/department";
-import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
 
-import { insertEmployeeSchema,type insertEmployeeSchemaType,type selectEmployeeSchemaType
+import { insertDepartmentSchema,type insertDepartmentSchemaType,type selectDepartmentSchemaType
 
- } from "@/zod-schemas/employee"
-
+ } from "@/zod-schemas/department"
  type Props={
-    employee?:selectEmployeeSchemaType,
     department?:selectDepartmentSchemaType,
-    departmentType:DataObj[],
 
  }
 
-export default function EmployeeForm({
-    employee,
-    departmentType
+export default function DepartmentForm({
+    department
 }:Props){
-    const defaultValues:insertEmployeeSchemaType={
-        id:employee?.id ?? 0,
-        departmentId: employee?.departmentId ?? 0,
-        name:employee?.name ?? '',
-        email:employee?.email?? '',
-        phone: employee?.phone ?? undefined,
+    const defaultValues:insertDepartmentSchemaType={
+        id:department?.id ?? 0,
+        name:department?.name ?? '',
     }
-    const form=useForm<insertEmployeeSchemaType>({
+    const form=useForm<insertDepartmentSchemaType>({
         mode:"onBlur",
-        resolver:zodResolver(insertEmployeeSchema),
+        resolver:zodResolver(insertDepartmentSchema),
         defaultValues,
     })
 
@@ -45,7 +36,7 @@ export default function EmployeeForm({
         result:saveResult,
         isExecuting:isSaving,
         reset:resetSaveAction,
-      }=useAction(saveEmployeeAction,{
+      }=useAction(saveDepartmentAction,{
         onSuccess({data}){
           //toast user
           toast.success(
@@ -54,10 +45,9 @@ export default function EmployeeForm({
             }
           )
         },
-
     })    
 
-    async function submitForm(data:insertEmployeeSchemaType) {
+    async function submitForm(data:insertDepartmentSchemaType) {
         console.log(data);
         executeSave(data);
     }
@@ -66,30 +56,16 @@ export default function EmployeeForm({
         <div className="flex flex-col gap-1 sm:px-9">
             <DisplayServerActionResponse result={saveResult}/>    
             <div>
-                <h2 className="text-2xl font-bold">{employee?.id ? "Edit" : "New"} Employee {employee?.id?`#${employee.id}`:"Form"} </h2>
+                <h2 className="text-2xl font-bold">{department?.id ? "Edit" : "New"} Department {department?.id?`#${department.id}`:"Form"} </h2>
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(submitForm)}
                 className="flex flex-col sm:flex-row gap-4 sm:gap-8"
                 >
                     <div className="flex flex-col gap-4 w-full max-w-xs">
-                        <InputWithLabel <insertEmployeeSchemaType>
+                        <InputWithLabel <insertDepartmentSchemaType>
                             fieldTitle="Name"
                             nameInSchema="name"
-                        />
-                        <SelectWithLabel <insertEmployeeSchemaType>
-                            fieldTitle="Program"
-                            nameInSchema="departmentId"
-                            data={departmentType}
-                        />
-                        <InputWithLabel <insertEmployeeSchemaType>
-                            fieldTitle="Email"
-                            nameInSchema="email"            
-                        />
-
-                        <InputWithLabel <insertEmployeeSchemaType>
-                            fieldTitle="Phone (optional)"
-                            nameInSchema="phone"
                         />
                         <div className="flex gap-2">
                             <Button 
@@ -122,13 +98,7 @@ export default function EmployeeForm({
                             </Button> 
 
                         </div>
-                      
-
                     </div>
- 
-                    
-                    
-              
                 </form>
             
             </Form>

@@ -76,7 +76,5 @@ export default async function TrackerFormPage({
         throw e;
       }
     }
-  
-    return <div />;
-}
+  }
   

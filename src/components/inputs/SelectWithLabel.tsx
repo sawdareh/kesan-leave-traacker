@@ -10,10 +10,7 @@ import {
 } from "@/components/ui/form";
 import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue } from "@/components/ui/select";
 
-type DataObj={
-    id:number,
-    description:string
-}
+
 
 type Props<S>={
     fieldTitle:string,

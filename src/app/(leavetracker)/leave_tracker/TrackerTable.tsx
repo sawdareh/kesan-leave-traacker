@@ -2,7 +2,7 @@
 
 import type { TrackerSearchResultsType } from "@/lib/queries/getTrackersSearchResults";
 import { deleteTracker } from "@/lib/deleTrackerRecord";
-
+import { formatTo12Hour } from "@/lib/timeFormat";
 import {
   createColumnHelper,
   flexRender,
@@ -71,7 +71,8 @@ export default function TrackerTable({ data }: Props) {
     "trackersDate",
     "name",
     "type",
-    "date",
+    "startTime",
+    "endTime",
     "email",
     "phone",
   ];
@@ -147,6 +148,12 @@ export default function TrackerTable({ data }: Props) {
             day: "2-digit",
           });
         }
+    
+        // ✅ Format startTime and endTime
+        if ((columnName === "startTime" || columnName === "endTime") && typeof value === "string") {
+          return formatTo12Hour(value);
+        }
+    
         return value;
       }, {
         id: columnName,
@@ -163,7 +170,8 @@ export default function TrackerTable({ data }: Props) {
           </Button>
         ),
       })
-    ),
+    )
+    
   ];
 
   const table = useReactTable({

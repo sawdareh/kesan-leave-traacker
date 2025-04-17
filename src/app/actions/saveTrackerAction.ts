@@ -27,7 +27,8 @@ export const saveTrackerAction=actionClient
             const result=await db.insert(trackers).values({
                 employeeId:Number(tracker.employeeId),
                 trackertypeId:Number(tracker.trackertypeId),
-                date: tracker.date, 
+                startTime: tracker.startTime, 
+                endTime: tracker.endTime,     
             }).returning({insertedId:trackers.id})
         
             return { message: `Tracker ID #${result[0].insertedId} created successfully` };
@@ -39,10 +40,10 @@ export const saveTrackerAction=actionClient
             .set({
                 employeeId:Number(tracker.employeeId),
                 trackertypeId:Number(tracker.trackertypeId),
-                date: tracker.date,
+                startTime: tracker.startTime, 
+                endTime: tracker.endTime,     
             })
             .where(eq(trackers.id,tracker.id!))
             .returning({updatedId:trackers.id})
         return {message:`Tracker ID #${result[0].updatedId} updated successfully`}
-
     })

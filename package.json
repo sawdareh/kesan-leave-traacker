@@ -9,7 +9,8 @@
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx ./src/db/migrate.ts",
-    "excel":"tsx ./excel.tsx"
+    "db:dletealltable":"npx rimraf src/db/migrations",
+    "excel": "tsx ./excel.tsx"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -51,6 +52,7 @@
     "drizzle-kit": "^0.30.6",
     "eslint": "^9",
     "eslint-config-next": "15.3.0",
+    "rimraf": "^6.0.1",
     "tailwindcss": "^4",
     "tsx": "^4.19.3",
     "typescript": "^5"

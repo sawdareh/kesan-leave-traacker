@@ -1,8 +1,7 @@
 "use client";
 
-import type { EmployeeSearchResultsType } from "@/lib/queries/getEmployeeSearchResults";
-import { deleteEmployee } from "@/lib/deleteEmployeeRecord";
-import { toast } from "sonner";
+import type { DepartmentSearchResultsType } from "@/lib/queries/getDepartmentSearchResults";
+import { deleteDepartment } from "@/lib/deleteDepartmentRecord";
 
 import {
   createColumnHelper,
@@ -17,8 +16,8 @@ import {
   getSortedRowModel,
   CellContext,
 } from "@tanstack/react-table";
-
 import { Button } from "@/components/ui/button";
+
 import {
   Table,
   TableBody,
@@ -41,21 +40,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import usePolling from "@/hooks/usePolling";
 import Filter from "@/components/react-table/Filter";
+import { toast } from "sonner";
 
 type Props = {
-  data: EmployeeSearchResultsType;
+  data: DepartmentSearchResultsType;
 };
 
-type RowType = EmployeeSearchResultsType[0];
+type RowType = DepartmentSearchResultsType[0];
 
-export default function EmployeeTable({ data }: Props) {
+export default function DepartmentTable({ data }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([
     {
-      id: "employeesDate",
+      id: "departmentsDate",
       desc: false,
     },
   ]);
@@ -68,11 +68,10 @@ export default function EmployeeTable({ data }: Props) {
   }, [searchParams.get("page")]);
 
   const columnHeadersArray: Array<keyof RowType> = [
-    "employeesDate",
+    "departmentsDate",
     "name",
-    "program",
-    "email",
-    "phone",
+    "id"
+
   ];
 
   const columnHelper = createColumnHelper<RowType>();
@@ -82,25 +81,29 @@ export default function EmployeeTable({ data }: Props) {
     const router = useRouter();
 
     const handleDeleteClick = async (e: React.MouseEvent) => {
-      e.stopPropagation(); // Prevent row click
-
-      if (isDeleting) return;
-      setIsDeleting(true);
-
-      try {
-        await deleteEmployee(row.original.id);
-        toast.success(`Deleted Employee #${row.original.id} successfully!`, {
-          duration: 3000,
-          description: "The employee record has been removed.",
-        });
-        router.refresh();
-      } catch (error) {
-        console.error(error);
-        toast.error("Cannot delete employee; related leave trackers must be deleted first.");
-      } finally {
-        setIsDeleting(false);
-      }
-    };
+        e.stopPropagation(); // prevent row click
+      
+        if (isDeleting) return;
+        setIsDeleting(true);
+      
+        try {
+          await deleteDepartment(row.original.id);
+          
+          // ✅ Show success toast before refreshing
+          toast.success(`Deleted Department #${row.original.id} successfully!`, {
+            duration: 3000,
+            description: "The Deparment record has been removed.",
+          });
+      
+          router.refresh(); // ✅ Refresh after showing toast
+        } catch (error) {
+          console.error(error);
+          toast.error("The department can't be removed; first remove it in the employee table.");
+        } finally {
+          setIsDeleting(false);
+        }
+      };
+      
 
     return (
       <Button
@@ -120,6 +123,7 @@ export default function EmployeeTable({ data }: Props) {
 
   ActionsCell.displayName = "ActionsCell";
 
+
   const columns = [
     columnHelper.display({
       id: "actions",
@@ -134,7 +138,7 @@ export default function EmployeeTable({ data }: Props) {
     ...columnHeadersArray.map((columnName) =>
       columnHelper.accessor((row) => {
         const value = row[columnName];
-        if (columnName === "employeesDate" && value instanceof Date) {
+        if (columnName === "departmentsDate" && value instanceof Date) {
           return value.toLocaleDateString("en-US", {
             year: "numeric",
             month: "2-digit",
@@ -198,26 +202,26 @@ export default function EmployeeTable({ data }: Props) {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className="bg-secondary p-1 text-center"
-                    style={{ width: header.getSize() }}
-                  >
-                    <div className="text-center">
-                      {!header.isPlaceholder &&
-                        flexRender(header.column.columnDef.header, header.getContext())}
-                    </div>
-                    {header.column.getCanFilter() && (
-                      <div className="mt-1 flex justify-center">
-                        <Filter
-                          column={header.column}
-                          filteredRows={table
-                            .getFilteredRowModel()
-                            .rows.map((row) => row.getValue(header.column.id))}
-                        />
-                      </div>
-                    )}
-                  </TableHead>
+                    <TableHead
+                        key={header.id}
+                        className="bg-secondary p-1 text-center"
+                        style={{ width: header.getSize() }}
+                        >
+                        <div className="text-center">
+                            {!header.isPlaceholder &&
+                            flexRender(header.column.columnDef.header, header.getContext())}
+                        </div>
+                        {header.column.getCanFilter() && (
+                            <div className="mt-1 flex justify-center">
+                            <Filter
+                                column={header.column}
+                                filteredRows={table
+                                .getFilteredRowModel()
+                                .rows.map((row) => row.getValue(header.column.id))}
+                            />
+                            </div>
+                        )}
+                    </TableHead>
 
                 ))}
               </TableRow>
@@ -230,7 +234,7 @@ export default function EmployeeTable({ data }: Props) {
                 key={row.id}
                 className="cursor-pointer hover:bg-border/25 dark:hover:bg-ring/40"
                 onClick={() =>
-                  router.push(`/employee/form?employeeId=${row.original.id}`)
+                  router.push(`/department/form?departmentId=${row.original.id}`)
                 }
               >
                 {row.getVisibleCells().map((cell) => (
@@ -244,7 +248,7 @@ export default function EmployeeTable({ data }: Props) {
         </Table>
       </div>
 
-      <div className="flex justify-between items-center gap-1 flex-wrap">
+      <div className="flex flex-cols sm:flex-row justify-between items-center gap-1 flex-wrap">
         <div>
           <p className="whitespace-nowrap font-bold">
             {`Page ${table.getState().pagination.pageIndex + 1} of ${Math.max(
@@ -257,7 +261,6 @@ export default function EmployeeTable({ data }: Props) {
             }]`}
           </p>
         </div>
-
         <div className="flex flex-col sm:flex-row gap-1">
           <div className="space-x-1">
             <Button variant="outline" onClick={() => table.resetSorting()}>
@@ -267,7 +270,6 @@ export default function EmployeeTable({ data }: Props) {
               Reset Filters
             </Button>
           </div>
-
           <div className="flex flex-row gap-1">
             <Button variant="outline" onClick={() => router.refresh()}>
               Refresh Data

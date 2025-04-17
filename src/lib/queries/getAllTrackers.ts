@@ -6,9 +6,10 @@ export default async function getAllTrackers() {
   const results = await db.select({
     id: trackers.id,
     trackersDate: trackers.createdAt,
+    name:employee.name,
     type: trackertypes.name,
-    date: trackers.date,
-    name: employee.name,
+    startTime: trackers.startTime, 
+    endTime: trackers.endTime,     
     email: employee.email,
     phone: employee.phone,
   })

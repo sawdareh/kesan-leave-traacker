@@ -26,6 +26,7 @@ export const saveEmployeeAction=actionClient
         if(employe.id===0){
             const result=await db.insert(employee).values({
                 name:employe.name,
+                departmentId:Number(employe.departmentId),
                 email:employe.email.toLocaleLowerCase(),
                 phone:employe.phone,
 
@@ -37,6 +38,7 @@ export const saveEmployeeAction=actionClient
         const result=await db.update(employee)
         .set({
             name:employe.name,
+            departmentId:Number(employe.departmentId),
             email:employe.email.toLocaleLowerCase(),
             phone:employe.phone,
 

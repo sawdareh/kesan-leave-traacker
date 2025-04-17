@@ -1,14 +1,14 @@
 import { db } from "@/db";
 import { trackers, employee, trackertypes } from "@/db/schema";
 import { or, ilike, eq, asc, sql } from "drizzle-orm";
-
 export default async function getTrackerSearchResults(searchText: string) {
   const results = await db.select({
     id: trackers.id,
     trackersDate: trackers.createdAt,
+    name:employee.name,
     type: trackertypes.name,
-    date: trackers.date,
-    name: employee.name,
+    startTime: trackers.startTime, 
+    endTime: trackers.endTime,     
     email: employee.email,
     phone: employee.phone,
   })
@@ -17,7 +17,8 @@ export default async function getTrackerSearchResults(searchText: string) {
   .leftJoin(trackertypes, eq(trackers.trackertypeId, trackertypes.id))
   .where(or(
     ilike(trackertypes.name, `%${searchText}%`),
-    ilike(sql`${trackers.date}::text`, `%${searchText}%`),
+    ilike(sql`${trackers.startTime}::text`, `%${searchText}%`),
+    ilike(sql`${trackers.endTime}::text`, `%${searchText}%`),
     ilike(employee.name, `%${searchText}%`),
     ilike(employee.email, `%${searchText}%`),
     ilike(employee.phone, `%${searchText}%`)
