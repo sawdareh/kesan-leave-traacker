@@ -8,8 +8,7 @@ export default async function getAllTrackers() {
     trackersDate: trackers.createdAt,
     name:employee.name,
     type: trackertypes.name,
-    startTime: trackers.startTime, 
-    endTime: trackers.endTime,     
+    leaveTime: trackers.leaveTime, 
     email: employee.email,
     phone: employee.phone,
   })

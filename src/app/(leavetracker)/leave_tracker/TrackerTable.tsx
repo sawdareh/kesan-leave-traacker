@@ -71,8 +71,7 @@ export default function TrackerTable({ data }: Props) {
     "trackersDate",
     "name",
     "type",
-    "startTime",
-    "endTime",
+    "leaveTime",
     "email",
     "phone",
   ];
@@ -150,7 +149,7 @@ export default function TrackerTable({ data }: Props) {
         }
     
         // ✅ Format startTime and endTime
-        if ((columnName === "startTime" || columnName === "endTime") && typeof value === "string") {
+        if ((columnName === "leaveTime") && typeof value === "string") {
           return formatTo12Hour(value);
         }
     

@@ -7,8 +7,7 @@ export default async function getTrackerSearchResults(searchText: string) {
     trackersDate: trackers.createdAt,
     name:employee.name,
     type: trackertypes.name,
-    startTime: trackers.startTime, 
-    endTime: trackers.endTime,     
+    leaveTime: trackers.leaveTime, 
     email: employee.email,
     phone: employee.phone,
   })
@@ -17,8 +16,7 @@ export default async function getTrackerSearchResults(searchText: string) {
   .leftJoin(trackertypes, eq(trackers.trackertypeId, trackertypes.id))
   .where(or(
     ilike(trackertypes.name, `%${searchText}%`),
-    ilike(sql`${trackers.startTime}::text`, `%${searchText}%`),
-    ilike(sql`${trackers.endTime}::text`, `%${searchText}%`),
+    ilike(sql`${trackers.leaveTime}::text`, `%${searchText}%`),
     ilike(employee.name, `%${searchText}%`),
     ilike(employee.email, `%${searchText}%`),
     ilike(employee.phone, `%${searchText}%`)

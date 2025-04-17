@@ -17,17 +17,12 @@ export const insertTrackerSchema = createInsertSchema(trackers, {
         message: "Tracker Name is required",
       }),
   
-    startTime: () =>
+      leaveTime: () =>
         z
           .string()
           .nonempty("Start time is required")
           .regex(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
       
-    endTime: () =>
-        z
-          .string()
-          .nonempty("End time is required")
-          .regex(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
       
     })
     

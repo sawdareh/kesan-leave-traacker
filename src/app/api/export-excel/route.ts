@@ -4,15 +4,7 @@ import getAllTrackers from '@/lib/queries/getAllTrackers';
 import { getAllTrackerType } from '@/lib/queries/getAllTrackerType';
 import { getAllEmployee } from '@/lib/queries/getAllemployee';
 
-function formatMinutesToHourText(minutes: number): string {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-
-  if (h > 0 && m > 0) return `${h}h ${m}m`;
-  if (h > 0) return `${h}h`;
-  if (m > 0) return `${m}m`;
-  return '-';
-}
+// Removed formatMinutesToHourText since we're counting instances, not formatting time
 
 export async function POST(req: Request) {
   try {
@@ -109,8 +101,8 @@ export async function POST(req: Request) {
       Object.assign(cell, cellStyle);
     });
 
-    const employeeTimeTotals: number[] = new Array(employees.length).fill(0);
-    const trackerTypeTotals: number[] = new Array(trackerTypes.length).fill(0);
+    const employeeLeaveCounts: number[] = new Array(employees.length).fill(0);
+    const trackerTypeCounts: number[] = new Array(trackerTypes.length).fill(0);
 
     // Tracker types columns
     for (let i = 0; i < trackerTypes.length; i++) {
@@ -125,23 +117,13 @@ export async function POST(req: Request) {
           (t) => t.name === emp.name && t.type === trackerTypes[i].name
         );
 
-        let totalMinutes = 0;
-        matches.forEach((match) => {
-          const [startHour, startMin] = match.startTime.split(':').map(Number);
-          const [endHour, endMin] = match.endTime.split(':').map(Number);
+        const leaveCount = matches.length; // Count the number of matching records
 
-          const start = startHour * 60 + startMin;
-          const end = endHour * 60 + endMin;
-          const diff = end - start;
-
-          totalMinutes += diff;
-        });
-
-        employeeTimeTotals[empIndex] += totalMinutes;
-        trackerTypeTotals[i] += totalMinutes;
+        employeeLeaveCounts[empIndex] += leaveCount;
+        trackerTypeCounts[i] += leaveCount;
 
         const cell = worksheet.getCell(`${col}${5 + empIndex}`);
-        cell.value = totalMinutes > 0 ? formatMinutesToHourText(totalMinutes) : '-';
+        cell.value = leaveCount > 0 ? leaveCount : '-';
         Object.assign(cell, cellStyle);
       });
     }
@@ -153,9 +135,9 @@ export async function POST(req: Request) {
     Object.assign(totalHeader, subHeaderStyle);
 
     employees.forEach((emp, empIndex) => {
-      const totalMinutes = employeeTimeTotals[empIndex];
+      const totalCount = employeeLeaveCounts[empIndex];
       const cell = worksheet.getCell(`${totalCol}${5 + empIndex}`);
-      cell.value = totalMinutes > 0 ? formatMinutesToHourText(totalMinutes) : '-';
+      cell.value = totalCount > 0 ? totalCount : '-';
       Object.assign(cell, totalStyle);
     });
 
@@ -167,16 +149,16 @@ export async function POST(req: Request) {
 
     for (let i = 0; i < trackerTypes.length; i++) {
       const col = alphabet[i + 1];
-      const totalMinutes = trackerTypeTotals[i];
+      const totalCount = trackerTypeCounts[i];
       const cell = worksheet.getCell(`${col}${summaryRow}`);
-      cell.value = totalMinutes > 0 ? formatMinutesToHourText(totalMinutes) : '-';
+      cell.value = totalCount > 0 ? totalCount : '-';
       Object.assign(cell, totalStyle);
     }
 
     const totalColSummary = alphabet[alphabetCount + 1];
-    const totalAllMinutes = employeeTimeTotals.reduce((sum, mins) => sum + mins, 0);
+    const totalAllCount = employeeLeaveCounts.reduce((sum, count) => sum + count, 0);
     const totalSummaryCell = worksheet.getCell(`${totalColSummary}${summaryRow}`);
-    totalSummaryCell.value = totalAllMinutes > 0 ? formatMinutesToHourText(totalAllMinutes) : '-';
+    totalSummaryCell.value = totalAllCount > 0 ? totalAllCount : '-';
     Object.assign(totalSummaryCell, totalStyle);
 
     // Auto-filter

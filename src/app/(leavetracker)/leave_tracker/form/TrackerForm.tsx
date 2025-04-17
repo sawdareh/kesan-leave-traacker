@@ -32,8 +32,7 @@ export default function TicketForm({
         id:tracker?.id ?? "(New)",
         employeeId:tracker?.employeeId ?? 0 ,
         trackertypeId:tracker?.trackertypeId?? 0,
-        startTime: tracker?.startTime ? tracker.startTime.slice(0, 5) : '', // "13:30:00" -> "13:30"
-        endTime: tracker?.endTime ? tracker.endTime.slice(0, 5) : '',       // "15:00:00" -> "15:00"
+        leaveTime: tracker?.leaveTime ? tracker.leaveTime.slice(0, 5) : '', // "13:30:00" -> "13:30"
         }
     const form=useForm<insertTrackerSchemaType>({
         mode:"onBlur",
@@ -83,12 +82,8 @@ export default function TicketForm({
                             data={type}
                         />
                         <InputTimeWithLabel <insertTrackerSchemaType>
-                            fieldTitle="StartTime"
-                            nameInSchema="startTime"
-                        />
-                        <InputTimeWithLabel <insertTrackerSchemaType>
-                            fieldTitle="EndTime"
-                            nameInSchema="endTime"
+                            fieldTitle="LeaveTime"
+                            nameInSchema="leaveTime"
                         />
                         <div className="flex flex-col gap-4 w-full max-w-xs">
                                 <div className="flex gap-2">

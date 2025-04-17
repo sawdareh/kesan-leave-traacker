@@ -29,8 +29,7 @@ export const trackers = pgTable("trackers", {
   id: serial("id").primaryKey(),
   employeeId: integer("employee_id").notNull().references(() => employee.id),
   trackertypeId: integer("trackertype_id").notNull().references(() => trackertypes.id),
-  startTime: time("start_time").notNull(),
-  endTime: time("end_time").notNull(),
+  leaveTime: time("leave_time").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });
