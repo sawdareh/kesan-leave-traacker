@@ -10,8 +10,6 @@ export async function getAllEmployee() {
         departmentId:employee.departmentId,
         name:employee.name,
         program:departments.name,
-        email:employee.email,
-        phone:employee.phone,
     })
         .from(employee)
         .leftJoin(departments, eq(employee.departmentId, departments.id))
@@ -19,3 +17,4 @@ export async function getAllEmployee() {
         
     return results;
 }
+

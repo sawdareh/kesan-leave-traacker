@@ -31,8 +31,6 @@ export default function EmployeeForm({
         id:employee?.id ?? 0,
         departmentId: employee?.departmentId ?? 0,
         name:employee?.name ?? '',
-        email:employee?.email?? '',
-        phone: employee?.phone ?? undefined,
     }
     const form=useForm<insertEmployeeSchemaType>({
         mode:"onBlur",
@@ -81,15 +79,6 @@ export default function EmployeeForm({
                             fieldTitle="Program"
                             nameInSchema="departmentId"
                             data={departmentType}
-                        />
-                        <InputWithLabel <insertEmployeeSchemaType>
-                            fieldTitle="Email"
-                            nameInSchema="email"            
-                        />
-
-                        <InputWithLabel <insertEmployeeSchemaType>
-                            fieldTitle="Phone (optional)"
-                            nameInSchema="phone"
                         />
                         <div className="flex gap-2">
                             <Button 

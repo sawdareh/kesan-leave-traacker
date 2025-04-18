@@ -71,8 +71,7 @@ export default function EmployeeTable({ data }: Props) {
     "employeesDate",
     "name",
     "program",
-    "email",
-    "phone",
+
   ];
 
   const columnHelper = createColumnHelper<RowType>();

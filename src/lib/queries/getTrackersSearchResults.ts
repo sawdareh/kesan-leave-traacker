@@ -22,8 +22,7 @@ export default async function getTrackerSearchResults(searchText: string) {
       or(
         ilike(trackertypes.name, `%${searchText}%`),
         ilike(employee.name, `%${searchText}%`),
-        ilike(employee.email, `%${searchText}%`),
-        ilike(employee.phone, `%${searchText}%`)
+
       )
     )
     .orderBy(asc(trackers.createdAt));

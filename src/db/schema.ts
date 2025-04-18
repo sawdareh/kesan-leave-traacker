@@ -12,8 +12,6 @@ export const employee = pgTable("employee", {
   id: serial("id").primaryKey(),
   departmentId: integer("department_id").references(() => departments.id), // Remove .nullable()
   name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).unique().notNull(),
-  phone: varchar("phone", { length: 20 }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });

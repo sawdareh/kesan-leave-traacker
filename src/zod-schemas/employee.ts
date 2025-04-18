@@ -11,8 +11,6 @@ export const insertEmployeeSchema = createInsertSchema(
         .refine((val) => val !== "" && val !== null && val !== undefined, {
           message: "Employee Name is required",
         }),
-
-        email: (schema) => schema.email("Invalid email address"),
     }
 )
 

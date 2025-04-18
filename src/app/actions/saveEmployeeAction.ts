@@ -27,8 +27,7 @@ export const saveEmployeeAction=actionClient
             const result=await db.insert(employee).values({
                 name:employe.name,
                 departmentId:Number(employe.departmentId),
-                email:employe.email.toLocaleLowerCase(),
-                phone:employe.phone,
+
 
             }).returning({insertedId:employee.id})        
             return {message:`Employee ID #${result[0].insertedId} created successfully`}
@@ -39,8 +38,6 @@ export const saveEmployeeAction=actionClient
         .set({
             name:employe.name,
             departmentId:Number(employe.departmentId),
-            email:employe.email.toLocaleLowerCase(),
-            phone:employe.phone,
 
         })
         .where(eq(employee.id,employe.id!))
