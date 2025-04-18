@@ -16,18 +16,51 @@ export const insertTrackerSchema = createInsertSchema(trackers, {
       .refine((val) => val !== "" && val !== null && val !== undefined, {
         message: "Tracker Name is required",
       }),
-  
-      leaveTime: () =>
+
+      leaveday:z
+      .union([z.number(), z.string().min(1)])
+      .refine((val) => val !== "" && val !== null && val !== undefined, {
+        message: "Total day leave is required",
+      }),
+
+      leaveDate: () =>
         z
           .string()
-          .nonempty("Start time is required")
-          .regex(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:mm)"),
+          .nonempty("Leave Date is required")
+          .regex(
+            /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+            "Invalid date format (YYYY-MM-DD)"
+          )
+          .refine(
+            (value) => {
+              const date = new Date(value);
+              return !isNaN(date.getTime()) && date.toISOString().startsWith(value);
+            },
+            {
+              message: "Invalid date",
+            }
+          ),
+
+      returnDate:() =>
+        z
+          .string()
+          .nonempty("Return Date is required")
+          .regex(
+            /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+            "Invalid date format (YYYY-MM-DD)"
+          )
+          .refine(
+            (value) => {
+              const date = new Date(value);
+              return !isNaN(date.getTime()) && date.toISOString().startsWith(value);
+            },
+            {
+              message: "Invalid date",
+            }
+          ),
       
       
     })
-    
-
 export const seletTrackerSchema=createSelectSchema(trackers)
-
 export type insertTrackerSchemaType=typeof insertTrackerSchema._type;
 export type selectTrackerSchemaType=typeof seletTrackerSchema._type;

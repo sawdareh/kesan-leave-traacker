@@ -2,7 +2,6 @@
 
 import type { TrackerSearchResultsType } from "@/lib/queries/getTrackersSearchResults";
 import { deleteTracker } from "@/lib/deleTrackerRecord";
-import { formatTo12Hour } from "@/lib/timeFormat";
 import {
   createColumnHelper,
   flexRender,
@@ -71,9 +70,10 @@ export default function TrackerTable({ data }: Props) {
     "trackersDate",
     "name",
     "type",
-    "leaveTime",
-    "email",
-    "phone",
+    "Date_of_Leave",
+    "Number_of_Days",
+    "Date_of_Return",
+    "Total_leaving"
   ];
 
   const columnHelper = createColumnHelper<RowType>();
@@ -124,6 +124,7 @@ export default function TrackerTable({ data }: Props) {
   };
 
   ActionsCell.displayName = "ActionsCell";
+  const formattedDateFields = ["trackersDate", "Date_of_Leave", "Date_of_Return"];
 
 
   const columns = [
@@ -140,18 +141,16 @@ export default function TrackerTable({ data }: Props) {
     ...columnHeadersArray.map((columnName) =>
       columnHelper.accessor((row) => {
         const value = row[columnName];
-        if (columnName === "trackersDate" && value instanceof Date) {
+    
+        // Format specific fields as MM/DD/YYYY
+        if (formattedDateFields.includes(columnName) && value instanceof Date) {
           return value.toLocaleDateString("en-US", {
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
           });
         }
-    
-        // ✅ Format startTime and endTime
-        if ((columnName === "leaveTime") && typeof value === "string") {
-          return formatTo12Hour(value);
-        }
+
     
         return value;
       }, {

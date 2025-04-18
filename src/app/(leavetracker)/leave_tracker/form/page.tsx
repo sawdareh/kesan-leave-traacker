@@ -36,12 +36,24 @@ export default async function TrackerFormPage({
   
       const types = await getAllTrackerType();
       const employees = await getAllEmployee();
-  
+      const days=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+      const time=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+
+    
       const trackerTypeOptions = types.map((data) => ({
         id: data.id,
         description: data.name,
       }));
-  
+      const totaltime = time.map((day) => ({
+        id: day,
+        description: day.toString().padStart(2, "0"), // e.g., 01, 02, ..., 31
+      }));
+
+      const dayOptions = days.map((day) => ({
+        id: day,
+        description: day.toString().padStart(2, "0"), // e.g., 01, 02, ..., 31
+      }));
+      
       const employeeOptions = employees.map((data) => ({
         id: data.id,
         description: data.name,
@@ -59,6 +71,8 @@ export default async function TrackerFormPage({
             employeeName={employeeOptions}
             employee={employeeOne}
             trackertypes={trackerTypeOne}
+            dayChoose={dayOptions}
+            totaltime={totaltime}
           />
         );
       } else {
@@ -66,6 +80,8 @@ export default async function TrackerFormPage({
           <TrackerForm
             type={trackerTypeOptions}
             employeeName={employeeOptions}
+            dayChoose={dayOptions}
+            totaltime={totaltime}
           />
         );
       }

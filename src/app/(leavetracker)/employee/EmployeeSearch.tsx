@@ -10,7 +10,7 @@ export default function EmployeeSearch(){
             <Input
                 name="searchText"
                 type="text"
-                placeholder="Serach Customers"
+                placeholder="Serach Employee"
                 className="w-full"
                 autoFocus
                 

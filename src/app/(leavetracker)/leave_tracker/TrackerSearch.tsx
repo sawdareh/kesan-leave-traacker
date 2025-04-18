@@ -10,7 +10,7 @@ export default function TrackerSearch(){
             <Input 
                 name="searchText"
                 type="text"
-                placeholder="Search Tickets"
+                placeholder="Search Trackers"
                 className="w-full"
                 autoFocus
             >

@@ -1,7 +1,7 @@
 "use client"
 
 import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
-import { InputTimeWithLabel } from "@/components/inputs/InputTimeWithLabel";
+import {InputDateWithLabel} from "@/components/inputs/inputDateWithLabel"
 import {useForm} from "react-hook-form"
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -22,17 +22,22 @@ import { insertTrackerSchema,type insertTrackerSchemaType,type selectTrackerSche
     tracker?:selectTrackerSchemaType,
     trackertypes?:selectTrackerTypeSchemaType,
     type:DataObj[],
+    dayChoose:DataObj[],
     employeeName:DataObj[],
+    totaltime:DataObj[],
  }
 
 export default function TicketForm({
-    tracker,type,employeeName
+    tracker,type,employeeName,dayChoose,totaltime
 }:Props){
     const defaultValues:insertTrackerSchemaType={
         id:tracker?.id ?? "(New)",
         employeeId:tracker?.employeeId ?? 0 ,
         trackertypeId:tracker?.trackertypeId?? 0,
-        leaveTime: tracker?.leaveTime ? tracker.leaveTime.slice(0, 5) : '', // "13:30:00" -> "13:30"
+        leaveDate:tracker?.leaveDate?? '',
+        returnDate:tracker?.returnDate?? '',
+        leaveday:tracker?.leaveday?? '',
+        totaltime:tracker?.totaltime??'',
         }
     const form=useForm<insertTrackerSchemaType>({
         mode:"onBlur",
@@ -70,21 +75,50 @@ export default function TicketForm({
                 <form onSubmit={form.handleSubmit(submitForm)}
                 className="flex flex-col sm:flex-row gap-4 sm:gap-8"
                 >
-                    <div className="flex flex-col gap-4 w-full max-w-xs">
-                        <SelectWithLabel <insertTrackerSchemaType>
-                            fieldTitle="Name"
-                            nameInSchema="employeeId"
-                            data={employeeName}
-                        />
-                        <SelectWithLabel <insertTrackerSchemaType>
-                            fieldTitle="Type"
-                            nameInSchema="trackertypeId"
-                            data={type}
-                        />
-                        <InputTimeWithLabel <insertTrackerSchemaType>
-                            fieldTitle="LeaveTime"
-                            nameInSchema="leaveTime"
-                        />
+                    <div className="flex flex-col gap-4 w-full ">
+                        <div className="flex flex-col sm:flex-row gap-8">
+                            <div className="flex flex-col w-full max-w-xs gap-8">
+                                <SelectWithLabel <insertTrackerSchemaType>
+                                    fieldTitle="Name"
+                                    nameInSchema="employeeId"
+                                    data={employeeName}
+                                />
+                                <SelectWithLabel <insertTrackerSchemaType>
+                                    fieldTitle="Type"
+                                    nameInSchema="trackertypeId"
+                                    data={type}
+                                />
+                                <SelectWithLabel <insertTrackerSchemaType>
+                                    fieldTitle="Number of Days"
+                                    nameInSchema="leaveday"
+                                    data={dayChoose}
+                                />
+
+                            </div>
+
+                            <div className="w-full flex flex-col max-w-xs gap-8">
+                                <InputDateWithLabel <insertTrackerSchemaType>
+                                    fieldTitle="Date of Leave"
+                                    nameInSchema="leaveDate"
+                                />
+
+
+                                <InputDateWithLabel <insertTrackerSchemaType>
+                                    fieldTitle="Date of Return"
+                                    nameInSchema="returnDate"
+                                />
+                                <SelectWithLabel <insertTrackerSchemaType>
+                                    fieldTitle="Hours (optinal)"
+                                    nameInSchema="totaltime"
+                                    data={totaltime}
+                                />
+                            </div>
+                        </div>
+
+
+
+
+
                         <div className="flex flex-col gap-4 w-full max-w-xs">
                                 <div className="flex gap-2">
                                     <Button 

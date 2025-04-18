@@ -19,7 +19,7 @@ type Props<S>={
     className?:string
 }& InputHTMLAttributes<HTMLInputElement>
 
-export function InputTimeWithLabel<S>({
+export function InputDateWithLabel<S>({
 fieldTitle,
 nameInSchema,
 className,
@@ -41,7 +41,7 @@ className,
 
                         <FormControl>
                             <Input
-                                type="time"
+                                type="date"
                                 id={nameInSchema}
                                 className={`w-full max-w-xs disabled:text-blue-500 dark:disabled:text-yellow-300 disabled:opacity-75 ${className}`}
                                 {...props}

@@ -1,27 +1,65 @@
 import { db } from "@/db";
 import { trackers, employee, trackertypes } from "@/db/schema";
-import { or, ilike, eq, asc, sql } from "drizzle-orm";
+import { or, ilike, eq, asc } from "drizzle-orm";
+
 export default async function getTrackerSearchResults(searchText: string) {
-  const results = await db.select({
-    id: trackers.id,
-    trackersDate: trackers.createdAt,
-    name:employee.name,
-    type: trackertypes.name,
-    leaveTime: trackers.leaveTime, 
-    email: employee.email,
-    phone: employee.phone,
-  })
-  .from(trackers)
-  .leftJoin(employee, eq(trackers.employeeId, employee.id))
-  .leftJoin(trackertypes, eq(trackers.trackertypeId, trackertypes.id))
-  .where(or(
-    ilike(trackertypes.name, `%${searchText}%`),
-    ilike(sql`${trackers.leaveTime}::text`, `%${searchText}%`),
-    ilike(employee.name, `%${searchText}%`),
-    ilike(employee.email, `%${searchText}%`),
-    ilike(employee.phone, `%${searchText}%`)
-  ))
-  .orderBy(asc(trackers.createdAt));
+  const rawResults = await db
+    .select({
+      id: trackers.id,
+      trackersDate: trackers.createdAt,
+      employeeId:trackers.employeeId,
+      name: employee.name,
+      type: trackertypes.name,
+      Date_of_Leave: trackers.leaveDate,
+      Number_of_Days: trackers.leaveday,
+      Date_of_Return: trackers.returnDate,
+      Total_time:trackers.totaltime,
+    })
+    .from(trackers)
+    .leftJoin(employee, eq(trackers.employeeId, employee.id))
+    .leftJoin(trackertypes, eq(trackers.trackertypeId, trackertypes.id))
+    .where(
+      or(
+        ilike(trackertypes.name, `%${searchText}%`),
+        ilike(employee.name, `%${searchText}%`),
+        ilike(employee.email, `%${searchText}%`),
+        ilike(employee.phone, `%${searchText}%`)
+      )
+    )
+    .orderBy(asc(trackers.createdAt));
+
+
+    const results = rawResults.map((row) => {
+      const time = `${row.Total_time}`; // e.g., "4:00"
+      const day = row.Number_of_Days;
+    
+      const dayLabel =
+        day === 0
+          ? "Part time"
+          : day === 1
+            ? "1 day"
+            : `${day} days`;
+    
+      const hourLabel =
+        time && parseInt(time) >= 1
+          ? `${time} ${parseInt(time) > 1 ? "hours" : "hour"}`
+          : "";
+    
+      const totalLeaving =
+        day === 0
+          ? hourLabel || ""
+          : hourLabel
+            ? `${dayLabel} and ${hourLabel}`
+            : dayLabel;
+    
+      return {
+        ...row,
+        Total_leaving: totalLeaving,
+        Number_of_Days: dayLabel,
+      };
+    });
+    
+    
 
   return results;
 }

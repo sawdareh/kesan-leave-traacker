@@ -7,11 +7,14 @@ import { ModeToggle } from './ModeToggle';
 import Link from 'next/link';
 import NavButtonMenu from './NavButtonMenu';
 import getAllTrackers from '@/lib/queries/getAllTrackers';
-import DropDownMenuYear from '@/components/DropDownMenuYear'
+import DropDownMenuYear from '@/components/DropDownMenuYear';
+import DropdownViewByName from "@/components/DropDownViewByName";
+import { getAllEmployee } from '@/lib/queries/getAllemployee';
 
 export default async function Header() {
 
     const tracker = await getAllTrackers();
+    const employee=await getAllEmployee();
 
     const uniqueYears = Array.from(
     new Set(
@@ -33,6 +36,8 @@ export default async function Header() {
                 </Link>
             </div>
             <div className="flex items-center gap-4">
+
+                <DropdownViewByName employee={employee}/>
                 <NavButtonMenu icon={File}
                     label='Leave Tracker Menu'
                     choice={[
