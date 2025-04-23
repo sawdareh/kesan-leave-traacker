@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
-import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import {ReactNode,useContext} from "react"
+import DataContext from "@/context/DataContext";
 
 import {
     DropdownMenu,
@@ -12,6 +13,7 @@ import {
 
 type Props={
     icon:LucideIcon,
+    children:ReactNode,
     label:string,
     choice:{
         title:string,
@@ -22,31 +24,30 @@ type Props={
 
 export default function NavButtonMenu({
     icon:Icon,
-    label,
-    choice
+    choice,
+    children
 }:Props) {
+    const context=useContext(DataContext);
+
+    if (!context) {
+        throw new Error("Home component must be used within a DataProvider");
+    }
+  
+    const { setIsOpen } = context;
   return (
     <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full"
-            
-            >
-                <Icon className="h-[1.2rem] w-[1.2rem]">
-
-                </Icon>
-                <span className="sr-only">
-                    {label}
-                </span>
-
-            </Button>
+        <div className='flex justify-start items-center gap-3' >
+            <Icon className="w-4 h-4" />
+            {children}
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
             {
                 choice.map(choice=>(
-                    <DropdownMenuItem key={choice.title} asChild>
+                    <DropdownMenuItem key={choice.title} asChild 
+                        onClick={()=>setIsOpen(false)}
+                    >
                         <Link href={choice.href}>
                             {choice.title}
                         </Link>

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect ,ReactNode,useContext} from 'react';
+import DataContext from '@/context/DataContext';
 import { useRouter } from 'next/navigation';
 import { EmployeeSearchResultsType } from '@/lib/queries/getEmployeeSearchResults';
 import {
@@ -11,16 +12,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
 import { Eye, LoaderCircle } from 'lucide-react';
 
 type Props = {
+  children:ReactNode,
   employee: EmployeeSearchResultsType;
 };
 
-export default function DropdownViewByName({ employee }: Props) {
+export default function DropdownViewByName({ employee ,children}: Props) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const context=useContext(DataContext);
+
+  if (!context) {
+      throw new Error("Home component must be used within a DataProvider");
+  }
+
+  const { setIsOpen } = context;
+
 
   // ✅ Auto-refresh every 10 seconds
   useEffect(() => {
@@ -46,9 +55,10 @@ export default function DropdownViewByName({ employee }: Props) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" disabled={loading}>
+          <div className='flex justify-start items-center gap-3 ' >
             <Eye className="w-4 h-4" />
-          </Button>
+            {children}
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>View Tracker summary by Person</DropdownMenuLabel>
@@ -57,7 +67,11 @@ export default function DropdownViewByName({ employee }: Props) {
             employee.map((data) => (
               <DropdownMenuItem
                 key={data.id}
-                onClick={() => handleViewSummary(data.id)}
+                onClick={() => {
+                  handleViewSummary(data.id);
+                  setIsOpen(false);
+                }}
+                
               >
                 {data.name}
               </DropdownMenuItem>

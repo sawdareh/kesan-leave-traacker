@@ -1,6 +1,6 @@
 'use client';
 
-import { useState,useEffect } from 'react';
+import { useState,useEffect,ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   DropdownMenu,
@@ -10,10 +10,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
 import { FileDown,LoaderCircle } from 'lucide-react';
+type Props={
+  children:ReactNode,
+  uniqueYears:number[]
+}
 
-export default function ExportDropdown({ uniqueYears }: { uniqueYears: number[] }) {
+export default function ExportDropdown({ children,uniqueYears}:Props) {
   const [downloading, setDownloading] = useState(false);
   const router=useRouter();
 
@@ -60,9 +63,11 @@ export default function ExportDropdown({ uniqueYears }: { uniqueYears: number[] 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" disabled={downloading}>
+        <div className='flex justify-start items-center gap-3' >
           <FileDown className="w-4 h-4" />
-        </Button>
+          {children}
+        </div>
+
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Export summary by Year</DropdownMenuLabel>
