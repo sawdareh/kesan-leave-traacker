@@ -78,12 +78,6 @@ export default function ResponsiveTable(
 
 
                 <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
-                  <DropdownViewByName employee={employee}>
-                    <span className="text-sm font-medium select-none">View</span>
-                  </DropdownViewByName>
-                </div>
-
-                <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                   <NavButtonMenu
                     icon={File}
                     label="Leave Tracker Menu"
