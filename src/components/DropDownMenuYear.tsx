@@ -2,6 +2,7 @@
 
 import { useState,useEffect,ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import Loading from "@/components/Loading"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -10,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { FileDown,LoaderCircle } from 'lucide-react';
+import { FileDown } from 'lucide-react';
 type Props={
   children:ReactNode,
   uniqueYears:number[]
@@ -88,11 +89,8 @@ export default function ExportDropdown({ children,uniqueYears}:Props) {
         )}
       </DropdownMenuContent>
       {downloading && (
-        <div className="fixed inset-0 z-50 bg-background/80">
-            <div className="w-full h-dvh grid place-content-center">
-                <LoaderCircle className="h-48 w-48 animate-spin text-foreground/20"></LoaderCircle>
-            </div>
-        </div>
+        <Loading/>
+
       )}
     </DropdownMenu>
   );
