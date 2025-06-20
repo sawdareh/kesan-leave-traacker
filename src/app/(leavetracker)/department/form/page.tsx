@@ -2,6 +2,7 @@ import { getDepartment } from "@/lib/queries/getDepartment";
 import BackButton from "@/components/BackButton";
 import * as Sentry from "@sentry/nextjs"
 import DepartmentForm from "@/app/(leavetracker)/department/form/DepartmentForm";
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
     searchParams,

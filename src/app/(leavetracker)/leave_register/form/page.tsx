@@ -2,9 +2,11 @@ import { getEmployee } from "@/lib/queries/getEmployee";
 import { getTracker } from "@/lib/queries/getTrackers";
 import { getAllTrackerType } from "@/lib/queries/getAllTrackerType";
 import { getTrackerType } from "@/lib/queries/getTrackerType";
-import { getAllEmployee } from "@/lib/queries/getAllemployee";
+import { getEmployeeSearchResults } from "@/lib/queries/getEmployeeSearchResults";
 import * as Sentry from "@sentry/nextjs";
-import TrackerForm from "@/app/(leavetracker)/leave_tracker/form/TrackerForm";
+import TrackerForm from "@/app/(leavetracker)/leave_register/form/TrackerForm";
+import {getUserNameFromAuth} from "@/lib/getUserInfoFromKinde"
+
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
@@ -27,16 +29,23 @@ export async function generateMetadata({
 }
 
 export default async function TrackerFormPage({
+
     searchParams,
   }: {
     searchParams: Promise<{ [key: string]: string | undefined }>;
   }) {
+
+
+
+
+
     try {
       const { trackerId } = await searchParams;
       const trackerIdNum = trackerId ? Number(trackerId) : null;
-  
+      const username= await getUserNameFromAuth()
+
       const types = await getAllTrackerType();
-      const employees = await getAllEmployee();
+      const employees = await getEmployeeSearchResults(username);
       const days=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
       const time=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 
@@ -45,6 +54,7 @@ export default async function TrackerFormPage({
         id: data.id,
         description: data.name,
       }));
+
       const totaltime = time.map((day) => ({
         id: day,
         description: day.toString().padStart(2, "0"), // e.g., 01, 02, ..., 31
@@ -74,6 +84,7 @@ export default async function TrackerFormPage({
             trackertypes={trackerTypeOne}
             dayChoose={dayOptions}
             totaltime={totaltime}
+
           />
         );
       } else {
@@ -83,6 +94,8 @@ export default async function TrackerFormPage({
             employeeName={employeeOptions}
             dayChoose={dayOptions}
             totaltime={totaltime}
+
+
           />
         );
       }

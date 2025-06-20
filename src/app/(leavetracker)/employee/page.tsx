@@ -6,6 +6,7 @@ import EmployeeTable from "@/app/(leavetracker)/employee/EmployeeTable"
 export const metadata={
     title:"EmployeeSearch"
 }
+export const dynamic = 'force-dynamic';
 
 export default async function EmployeePage({
   searchParams,

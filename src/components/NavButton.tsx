@@ -1,18 +1,15 @@
 import { LucideIcon } from "lucide-react";
 
 import {Button} from "@/components/ui/button";
-import Link from "next/link";
 
 type Props={
-    icon:LucideIcon,
+    icon?:LucideIcon,
     label:string,
     href?:string,
 }
 
 export default function NavButton({
-    icon:Icon,
     label,
-    href,
 }:Props) {
   return (
     <Button
@@ -23,11 +20,7 @@ export default function NavButton({
         className="rounded-full"
         asChild
     >
-        {
-        href?(
-        <Link href={href}>
-            <Icon/>
-        </Link>):<Icon/>}
+
     </Button>
   )
 }

@@ -1,4 +1,6 @@
+"use client"
 export default function Home() {
+
   return (
     <div className="bg-black bg-home-img bg-cover bg-center">
       <main className="flex flex-col  text-center h-dvh justify-center max-w-5xl mx-auto">
@@ -11,6 +13,7 @@ export default function Home() {
 
         </div>
       </main>
+    
     </div>
   );
 }

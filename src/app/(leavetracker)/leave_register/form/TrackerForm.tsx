@@ -13,7 +13,6 @@ import {type selectTrackerTypeSchemaType } from "@/zod-schemas/trackertype";
 import { LoaderCircle } from "lucide-react";
 import {DisplayServerActionResponse} from "@/components/DisplayServerActionResponse";
 import { Form } from "@/components/ui/form"
-
 import { insertTrackerSchema,type insertTrackerSchemaType,type selectTrackerSchemaType
 
  } from "@/zod-schemas/tracker"
@@ -25,11 +24,15 @@ import { insertTrackerSchema,type insertTrackerSchemaType,type selectTrackerSche
     dayChoose:DataObj[],
     employeeName:DataObj[],
     totaltime:DataObj[],
+
+
  }
 
 export default function TicketForm({
     tracker,type,employeeName,dayChoose,totaltime
 }:Props){
+
+
     const defaultValues:insertTrackerSchemaType={
         id:tracker?.id ?? "(New)",
         employeeId:tracker?.employeeId ?? 0 ,
@@ -38,8 +41,6 @@ export default function TicketForm({
         returnDate:tracker?.returnDate?? '',
         leaveday:tracker?.leaveday?? '',
         totaltime:tracker?.totaltime??'',
-        approved:true,
-        received:true,
         }
     const form=useForm<insertTrackerSchemaType>({
         mode:"onBlur",
@@ -59,7 +60,9 @@ export default function TicketForm({
             "Success!",{
               description:data?.message,
             }
-          )
+
+        )
+
         },
     })    
 
@@ -71,7 +74,7 @@ export default function TicketForm({
         <div className="flex flex-col gap-1 sm:px-9">
             <DisplayServerActionResponse result={saveResult}/>    
             <div>
-                <h2 className="text-2xl font-bold">{tracker?.id ? "Edit" : "New"} Leave Tracker {tracker?.id?`#${tracker.id}`:"Form"} </h2>
+                <h2 className="text-2xl font-bold">{tracker?.id ? "Edit" : "New"} Leave Register Form {tracker?.id?`#${tracker.id}`:"Form"} </h2>
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(submitForm)}
@@ -123,22 +126,16 @@ export default function TicketForm({
 
                         <div className="flex flex-col gap-4 w-full max-w-xs">
                                 <div className="flex gap-2">
-                                    <Button 
-                                        type="submit"
-                                        className="w-3/4"
-                                        variant="default"
-                                        title="save"
-                                        disabled={isSaving}
-
-                                        >
-                                            {
-                                            isSaving?(
-                                                <>
-                                                <LoaderCircle className="animate-spin">Saving</LoaderCircle>
-                                                </>
-                                            ):"Save"
-                                            }
+                                    <Button
+                                    type="submit"
+                                    className="w-3/4"
+                                    variant="default"
+                                    title="save"
+                                    disabled={isSaving}
+                                    >
+                                    {isSaving ? <LoaderCircle className="animate-spin">Saving</LoaderCircle> : "Save"}
                                     </Button>
+
                                     <Button 
                                         type="button"
                                         variant="destructive"

@@ -31,6 +31,8 @@ export const saveTrackerAction=actionClient
                 returnDate:tracker.returnDate,
                 leaveday: Number(tracker.leaveday),
                 totaltime: tracker.totaltime || null, 
+                approved:tracker.approved,
+                received:tracker.received,
             }).returning({insertedId:trackers.id})
         
             return { message: `Tracker ID #${result[0].insertedId} created successfully` };
@@ -46,6 +48,8 @@ export const saveTrackerAction=actionClient
                 returnDate:tracker.returnDate,
                 leaveday: Number(tracker.leaveday),
                 totaltime: tracker.totaltime || null, 
+                approved:tracker.approved,
+                received:tracker.received,
             })
             .where(eq(trackers.id,tracker.id!))
             .returning({updatedId:trackers.id})

@@ -25,12 +25,26 @@ export const metadata: Metadata = {
   applicationName:"KESAN Leave Tracker"
 };
 
+
+  if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        .then((registration) => {
+          console.log('[Client] Service Worker registered:', registration);
+        })
+        .catch((err) => {
+          console.error('[Client] Service Worker registration failed:', err);
+        });
+    }
+
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
+
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

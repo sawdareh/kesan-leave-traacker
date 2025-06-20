@@ -2,6 +2,7 @@ import { getTrackerType } from "@/lib/queries/getTrackerType";
 import BackButton from "@/components/BackButton";
 import * as Sentry from "@sentry/nextjs"
 import TrackerTypeForm from "@/app/(leavetracker)/tracker_type/form/TrackerTypeForm";
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
     searchParams,
