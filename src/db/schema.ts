@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, timestamp, integer,date } from "drizzle-orm/pg-core";
+import { pgTable, serial, varchar, timestamp, integer,date ,boolean} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const departments = pgTable("departments", {
@@ -31,6 +31,8 @@ export const trackers = pgTable("trackers", {
   returnDate:date("return_date").notNull(),
   leaveday:integer("leaveday").notNull(),
   totaltime:varchar("totaltime"),
+  approved:boolean("approved").notNull().default(false),
+  received:boolean("received").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });

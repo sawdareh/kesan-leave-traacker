@@ -2,6 +2,7 @@ import getAllTrackers from "@/lib/queries/getAllTrackers";
 import SummaryComponent from "@/app/(leavetracker)/summary/SummaryComponent";
 import { getEmployee } from "@/lib/queries/getEmployee";
 import {getAllTrackerType} from "@/lib/queries/getAllTrackerType"
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: "SummarySearch",

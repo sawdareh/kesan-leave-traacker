@@ -2,12 +2,17 @@ export const metadata = {
   title: "DepartmentSearch",
 };
 
+
 export const dynamic = "force-dynamic"; 
+
 
 import { getAllDepartment } from "@/lib/queries/getAllDepartment";
 import DepartmentTable from "@/app/(leavetracker)/department/DepartmentTable";
-
 export default async function TrackerPage() {
+
+
+
+
   const results = await getAllDepartment();
   return (
     <>

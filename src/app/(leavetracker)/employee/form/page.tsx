@@ -3,6 +3,7 @@ import BackButton from "@/components/BackButton";
 import * as Sentry from "@sentry/nextjs";
 import EmployeeForm from "@/app/(leavetracker)/employee/form/EmployeeForm";
 import { getAllDepartment } from "@/lib/queries/getAllDepartment";
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
   searchParams,
